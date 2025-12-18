@@ -7,8 +7,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
+  const login = (email: string, password: string): boolean => {
+    console.log('Login attempt:', email);
+    
+    const mockUser: User = {
+      id: 1,
+      name: 'Student User',
+      email: email,
+      quizzes: [
+        { id: 1, title: 'JavaScript Basics', date: '2024-03-01' },
+        { id: 2, title: 'React Hooks', date: '2024-03-10' }
+      ]
+    };
+    
+    setUser(mockUser);
+    setIsAuthenticated(true);
+    return true;
+  };
+
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated }}>
+    <AuthContext.Provider value={{ user, isAuthenticated, login }}>
       {children}
     </AuthContext.Provider>
   );
