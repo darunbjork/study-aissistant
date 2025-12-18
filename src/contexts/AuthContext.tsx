@@ -4,8 +4,11 @@ import { User, AuthContextType } from '../types';
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
+  const [user, setUser] = useState<User | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
   return (
-    <AuthContext.Provider value={undefined}>
+    <AuthContext.Provider value={{ user, isAuthenticated }}>
       {children}
     </AuthContext.Provider>
   );
