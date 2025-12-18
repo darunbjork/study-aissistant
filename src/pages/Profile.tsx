@@ -27,6 +27,24 @@ function Profile() {
           Update Name
         </button>
       </div>
+
+      <div>
+        <h3>My Quizzes</h3>
+        {auth.user.quizzes.length === 0 ? (
+          <p>No quizzes yet</p>
+        ) : (
+          <ul>
+            {auth.user.quizzes.map(quiz => (
+              <li key={quiz.id}>
+                {quiz.title} - {quiz.date}
+                <button onClick={() => auth.deleteQuiz(quiz.id)}>
+                  Delete
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
     </div>
   );
 }
