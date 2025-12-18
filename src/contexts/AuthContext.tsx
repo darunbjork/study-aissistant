@@ -25,8 +25,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return true;
   };
 
+  const signup = (name: string, email: string, password: string): boolean => {
+    console.log('Signup attempt:', name, email);
+    
+    const newUser: User = {
+      id: Date.now(),
+      name,
+      email,
+      quizzes: []
+    };
+    
+    setUser(newUser);
+    setIsAuthenticated(true);
+    return true;
+  };
+
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, login }}>
+    <AuthContext.Provider value={{ user, isAuthenticated, login, signup }}>
       {children}
     </AuthContext.Provider>
   );
