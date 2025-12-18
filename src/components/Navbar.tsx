@@ -10,7 +10,7 @@ function Navbar() {
       justifyContent: 'space-between',
       alignItems: 'center',
       padding: '1rem 2rem',
-      backgroundColor: '#4f46e5',
+      backgroundColor: '#6b7280',
       color: 'white'
     }}>
       <Link to="/">Study AI Assistant</Link>
