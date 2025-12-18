@@ -4,6 +4,12 @@ export interface Quiz {
   date: string;
 }
 
+export interface QuizQuestion {
+  question: string;
+  options: { [key: string]: string }; // e.g., { A: "Option A text", B: "Option B text" }
+  correctAnswer: string;
+}
+
 export interface User {
   id: number;
   name: string;
