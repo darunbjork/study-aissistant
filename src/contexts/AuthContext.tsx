@@ -49,8 +49,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(prev => prev ? { ...prev, ...updatedData } : null);
   };
 
+  const deleteQuiz = (quizId: number) => {
+    setUser(prev => {
+      if (!prev) return null;
+      return {
+        ...prev,
+        quizzes: prev.quizzes.filter(quiz => quiz.id !== quizId)
+      };
+    });
+  };
+
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, login, signup, logout, updateProfile }}>
+    <AuthContext.Provider value={{ user, isAuthenticated, login, signup, logout, updateProfile, deleteQuiz }}>
       {children}
     </AuthContext.Provider>
   );
