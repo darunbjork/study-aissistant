@@ -6,6 +6,7 @@ import Signup from './pages/Signup';
 import Profile from './pages/Profile';
 import Study from './pages/Study';
 import ProtectedRoute from './components/ProtectedRoute';
+import Card from './components/Card';
 
 function App() {
   return (
@@ -13,17 +14,17 @@ function App() {
       <Navbar />
       <div style={{ padding: '2rem' }}>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
+          <Route path="/" element={<Card><Home /></Card>} />
+          <Route path="/login" element={<Card><Login /></Card>} />
+          <Route path="/signup" element={<Card><Signup /></Card>} />
           <Route path="/profile" element={
             <ProtectedRoute>
-              <Profile />
+              <Card><Profile /></Card>
             </ProtectedRoute>
           } />
           <Route path="/study" element={
             <ProtectedRoute>
-              <Study />
+              <Card><Study /></Card>
             </ProtectedRoute>
           } />
         </Routes>
