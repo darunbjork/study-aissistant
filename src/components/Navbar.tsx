@@ -24,6 +24,17 @@ function Navbar() {
         ) : (
           <>
             <Link to="/study" style={{ textDecoration: 'none', color: 'white', marginLeft: '1rem' }}>Study</Link>
+            {/* Add this line after the Study link */}
+            <Link 
+              to="/create-quiz" 
+              style={{ 
+                color: 'white', 
+                textDecoration: 'none',
+                margin: '0 16px'
+              }}
+            >
+              Create Quiz
+            </Link>
             <Link to="/profile" style={{ textDecoration: 'none', color: 'white', marginLeft: '1rem' }}>Profile</Link>
             <button onClick={auth.logout} style={{ marginLeft: '1rem' }}>Logout</button>
           </>
