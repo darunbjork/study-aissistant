@@ -5,6 +5,8 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Profile from './pages/Profile';
 import Study from './pages/Study';
+import CreateQuiz from './pages/CreateQuiz';
+import TakeQuiz from './pages/TakeQuiz';
 import ProtectedRoute from './components/ProtectedRoute';
 import Card from './components/Card';
 
@@ -25,6 +27,16 @@ function App() {
           <Route path="/study" element={
             <ProtectedRoute>
               <Card><Study /></Card>
+            </ProtectedRoute>
+          } />
+          <Route path="/create-quiz" element={
+            <ProtectedRoute>
+              <CreateQuiz />
+            </ProtectedRoute>
+          } />
+          <Route path="/take-quiz/:quizId" element={
+            <ProtectedRoute>
+              <TakeQuiz />
             </ProtectedRoute>
           } />
         </Routes>
