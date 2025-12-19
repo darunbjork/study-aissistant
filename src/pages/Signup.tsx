@@ -12,7 +12,7 @@ function Signup() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     auth.signup(name, email, password);
-    navigate('/profile');
+    navigate('/login');
   };
 
   return (
