@@ -10,37 +10,76 @@ function Study() {
   const [loading, setLoading] = useState(false);
   const [rawAiResponse, setRawAiResponse] = useState(''); // Store raw response for debugging if needed
 
-  // Function to parse the AI's response into structured questions
-  const parseQuizText = (text: string): QuizQuestion[] => {
-    const questions: QuizQuestion[] = [];
-    const questionBlocks = text.split(/(Q\d+:)/).filter(Boolean);
+    const parseQuizText = (text: string): QuizQuestion[] => {
 
-    for (let i = 0; i < questionBlocks.length; i += 2) {
-      if (questionBlocks[i].startsWith('Q')) {
-        const questionText = questionBlocks[i + 1].split('\n').filter(line => line.trim() !== '')[0].trim();
-        const options: { [key: string]: string } = {};
-        let correctAnswer = '';
+      const questionBlocks = text.split(/(Q\d+:)/).filter(Boolean);
 
-        const optionsAndCorrect = questionBlocks[i + 1].split('\n').slice(1);
-        for (const line of optionsAndCorrect) {
-          if (line.startsWith('A) ') || line.startsWith('B) ') || line.startsWith('C) ') || line.startsWith('D) ')) {
-            const optionKey = line.substring(0, 1);
-            const optionText = line.substring(3).trim();
-            options[optionKey] = optionText;
-          } else if (line.startsWith('Correct: ')) {
-            correctAnswer = line.substring('Correct: '.length).trim();
-          }
+  
+
+      // Group the flat array into pairs of [questionNumber, questionBody]
+
+      const pairedBlocks = questionBlocks.reduce((result, _value, index, array) => {
+
+        if (index % 2 === 0) {
+
+          result.push(array.slice(index, index + 2));
+
         }
 
-        questions.push({
-          question: questionText,
-          options,
-          correctAnswer,
+        return result;
+
+      }, [] as string[][]);
+
+          return pairedBlocks
+
+            .filter(pair => pair.length === 2 && pair[0].startsWith('Q'))
+
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            .map(([_, qBody], index) => {
+
+          const questionTextLines = qBody.split('\n').filter(line => line.trim() !== '');
+
+          const questionText = questionTextLines[0].trim();
+
+          const options: string[] = [];
+
+          let correctAnswerIndex: number = -1;
+
+  
+
+          for (const line of questionTextLines.slice(1)) {
+
+            if (line.match(/^[A-D]\) /)) {
+
+              options.push(line.substring(3).trim());
+
+            } else if (line.startsWith('Correct: ')) {
+
+              const correctLetter = line.substring('Correct: '.length).trim();
+
+              correctAnswerIndex = correctLetter.charCodeAt(0) - 'A'.charCodeAt(0);
+
+            }
+
+          }
+
+  
+
+          return {
+
+            id: Date.now() + index, // Assign a unique ID
+
+            question: questionText,
+
+            options,
+
+            correctAnswer: correctAnswerIndex,
+
+          };
+
         });
-      }
-    }
-    return questions;
-  };
+
+    };
 
   const handleAsk = async () => {
     if (!studyNote.trim()) return;
@@ -134,14 +173,20 @@ function Study() {
           {quizQuestions.map((q, index) => (
             <div key={index} style={{ marginBottom: '1.5rem', padding: '1rem', border: '1px solid #ddd', borderRadius: '0.5rem', backgroundColor: 'white' }}>
               <p><strong>Q{index + 1}: {q.question}</strong></p>
-              <ul style={{ listStyleType: 'none', padding: 0 }}>
-                {Object.entries(q.options).map(([key, value]) => (
-                  <li key={key} style={{ marginBottom: '0.5rem' }}>
-                    <strong>{key})</strong> {value}
+              <ol style={{ listStyleType: 'upper-alpha', paddingLeft: '20px' }}>
+                {q.options.map((option, optIndex) => (
+                  <li 
+                    key={optIndex} 
+                    style={{ 
+                      marginBottom: '0.5rem',
+                      color: optIndex === q.correctAnswer ? 'green' : 'inherit'
+                    }}
+                  >
+                    {option} {optIndex === q.correctAnswer && ' (Correct)'}
                   </li>
                 ))}
-              </ul>
-              <p style={{ fontWeight: 'bold', color: 'green' }}>Correct: {q.correctAnswer}</p>
+              </ol>
+              {/* <p style={{ fontWeight: 'bold', color: 'green' }}>Correct: {String.fromCharCode(65 + q.correctAnswer)}</p> */ /* For debugging */ }
             </div>
           ))}
         </div>
