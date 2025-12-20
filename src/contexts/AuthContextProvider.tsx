@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from 'react';
-import type { User, NewQuiz, Quiz } from '../types';
+import type { User, NewQuiz, Quiz, SavedQuizResult } from '../types';
 import { AuthContext } from './AuthContext';
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -13,8 +13,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       id: 1,
       name: 'Student User',
       email: email,
+      password: 'password', // Add this
       quizzes: [],
       createdQuizzes: [],
+      settings: { theme: 'light' }, // Add this
     };
     
     setUser(mockUser);
@@ -29,7 +31,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       id: Date.now(),
       name,
       email,
-      quizzes: []
+      password: 'password', // Add this
+      quizzes: [],
+      createdQuizzes: [],
+      settings: { theme: 'light' }, // Add this
     };
     
     setUser(newUser);
@@ -56,13 +61,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     });
   };
 
-  // Add this function
   const addCreatedQuiz = (quizData: NewQuiz) => {
     const newQuiz: Quiz = {
       ...quizData,
       id: Date.now(),
       date: new Date().toISOString().split('T')[0], // Format: YYYY-MM-DD
       userId: user?.id || 0,
+      source: 'manual', // Add this
     };
     
     setUser(prev => {
@@ -74,7 +79,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     });
   };
 
-  // Add this function
   const updateQuiz = (quizId: number, updatedQuiz: Partial<Quiz>) => {
     setUser(prev => {
       if (!prev) return null;
@@ -87,13 +91,40 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     });
   };
 
-  // Add this function
   const deleteCreatedQuiz = (quizId: number) => {
     setUser(prev => {
       if (!prev) return null;
       return {
         ...prev,
         createdQuizzes: prev.createdQuizzes?.filter(quiz => quiz.id !== quizId)
+      };
+    });
+  };
+
+  // Add this function
+  const saveQuizResult = (result: Omit<SavedQuizResult, 'id' | 'date'>) => {
+    setUser(prev => {
+      if (!prev) return null;
+      const newResult: SavedQuizResult = {
+        ...result,
+        id: Date.now(),
+        date: new Date().toISOString().split('T')[0],
+      };
+      return {
+        ...prev,
+        quizzes: [...prev.quizzes, newResult],
+      };
+    });
+  };
+
+  // Add this function
+  const toggleTheme = () => {
+    setUser(prev => {
+      if (!prev) return null;
+      const newTheme = prev.settings.theme === 'light' ? 'dark' : 'light';
+      return {
+        ...prev,
+        settings: { ...prev.settings, theme: newTheme },
       };
     });
   };
@@ -107,9 +138,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       logout,
       updateProfile,
       deleteQuiz,
-      addCreatedQuiz,      // Add this
-      updateQuiz,          // Add this
-      deleteCreatedQuiz    // Add this
+      addCreatedQuiz,
+      updateQuiz,
+      deleteCreatedQuiz,
+      saveQuizResult,    // Add this
+      toggleTheme,       // Add this
     }}>
       {children}
     </AuthContext.Provider>
