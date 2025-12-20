@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect, type ReactNode } from 'react';
+import { toast } from 'react-toastify';
 import type { User, NewQuiz, Quiz, SavedQuizResult, AuthContextType } from '../types';
 import * as storage from '../utils/storage';
 
@@ -26,19 +27,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const foundUser = storage.findUserByEmail(email);
     
     if (!foundUser) {
-      alert('User not found');
+      toast.error('User not found');
       return false;
     }
     
     if (foundUser.password !== password) {
-      alert('Invalid password');
+      toast.error('Invalid password');
       return false;
     }
     
     setUser(foundUser);
     setIsAuthenticated(true);
     storage.setCurrentUser(foundUser.id);
-    alert(`Welcome back, ${foundUser.name}!`);
+    toast.success(`Welcome back, ${foundUser.name}!`);
     return true;
   };
 
@@ -46,7 +47,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const existingUser = storage.findUserByEmail(email);
     
     if (existingUser) {
-      alert('Email already exists');
+      toast.error('Email already exists');
       return false;
     }
 
@@ -64,7 +65,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(newUser);
     setIsAuthenticated(true);
     storage.setCurrentUser(newUser.id);
-    alert('Account created successfully!');
+    toast.success('Account created successfully!');
     return true;
   };
 
@@ -72,7 +73,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null);
     setIsAuthenticated(false);
     storage.clearCurrentUser();
-    alert('Logged out successfully');
+    toast.success('Logged out successfully');
   };
 
   const updateProfile = (updatedData: Partial<User>) => {
@@ -81,7 +82,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const updatedUser = { ...user, ...updatedData };
     setUser(updatedUser);
     storage.updateUser(user.id, updatedData);
-    alert('Profile updated!');
+    toast.success('Profile updated!');
   };
 
   const deleteQuiz = (quizId: number) => {
@@ -91,7 +92,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const updatedUser = { ...user, quizzes: updatedQuizzes };
     setUser(updatedUser);
     storage.updateUser(user.id, { quizzes: updatedQuizzes });
-    alert('Quiz result deleted');
+    toast.success('Quiz result deleted');
   };
 
   const addCreatedQuiz = (quizData: NewQuiz) => {
@@ -113,7 +114,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const updatedUser = { ...user, createdQuizzes: updatedQuizzes };
     setUser(updatedUser);
     storage.updateUser(user.id, { createdQuizzes: updatedQuizzes });
-    alert('Quiz created successfully!');
+    toast.success('Quiz created successfully!');
   };
 
   const updateQuiz = (quizId: number, updatedQuiz: Partial<Quiz>) => {
@@ -126,7 +127,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const updatedUser = { ...user, createdQuizzes: updatedQuizzes };
     setUser(updatedUser);
     storage.updateUser(user.id, { createdQuizzes: updatedQuizzes });
-    alert('Quiz updated!');
+    toast.success('Quiz updated!');
   };
 
   const deleteCreatedQuiz = (quizId: number) => {
@@ -136,7 +137,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const updatedUser = { ...user, createdQuizzes: updatedQuizzes };
     setUser(updatedUser);
     storage.updateUser(user.id, { createdQuizzes: updatedQuizzes });
-    alert('Quiz deleted');
+    toast.success('Quiz deleted');
   };
 
   const saveQuizResult = (result: Omit<SavedQuizResult, 'id' | 'date'>) => {
@@ -155,11 +156,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     
     const percentage = (result.score / result.totalQuestions) * 100;
     if (percentage >= 80) {
-      alert(`Excellent! You scored ${percentage.toFixed(0)}%`);
+      toast.success(`Excellent! You scored ${percentage.toFixed(0)}%`);
     } else if (percentage >= 60) {
-      alert(`Good job! You scored ${percentage.toFixed(0)}%`);
+      toast.info(`Good job! You scored ${percentage.toFixed(0)}%`);
     } else {
-      alert(`Keep practicing! You scored ${percentage.toFixed(0)}%`);
+      toast.warn(`Keep practicing! You scored ${percentage.toFixed(0)}%`);
     }
   };
 

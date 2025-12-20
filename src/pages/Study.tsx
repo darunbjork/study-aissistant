@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { useAuth } from '../hooks/useAuth';
 import type { QuizQuestion, NewQuiz } from '../types';
 import Button from '../components/Button';
@@ -54,7 +55,7 @@ function Study() {
   const handleGenerateQuiz = async () => {
     console.log(studyNote);
     if (!studyNote.trim()) {
-      alert('Please enter study notes');
+      toast.error('Please enter study notes');
       return;
     }
 
@@ -115,7 +116,7 @@ Correct: [A/B/C/D]
       const parsed = parseQuizText(aiResponse);
       
       if (parsed.length === 0) {
-        alert('Failed to parse AI response. Try again.');
+        toast.error('Failed to parse AI response. Try again.');
         return;
       }
 
@@ -126,10 +127,10 @@ Correct: [A/B/C/D]
       setQuizTitle(`AI Quiz: ${firstWords}...`);
       setQuizDescription(`AI-generated quiz based on your study notes about: ${firstWords}...`);
       
-      alert(`Generated ${parsed.length} questions!`);
+      toast.success(`Generated ${parsed.length} questions!`);
     } catch (error) {
       console.error('AI Error:', error);
-      alert('Failed to generate quiz. Please try again.');
+      toast.error('Failed to generate quiz. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -137,12 +138,12 @@ Correct: [A/B/C/D]
 
   const handleSaveQuiz = () => {
     if (!quizTitle.trim()) {
-      alert('Please enter a quiz title');
+      toast.error('Please enter a quiz title');
       return;
     }
 
     if (quizQuestions.length === 0) {
-      alert('No questions to save');
+      toast.error('No questions to save');
       return;
     }
 

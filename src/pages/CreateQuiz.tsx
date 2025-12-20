@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { useAuth } from '../hooks/useAuth';
 import type { NewQuiz, QuizQuestion } from '../types';
 import Card from '../components/Card';
@@ -23,12 +24,12 @@ function CreateQuiz() {
 
   const handleAddQuestion = () => {
     if (!currentQuestion.question.trim()) {
-      alert('Please enter a question');
+      toast.error('Please enter a question');
       return;
     }
     
     if (currentQuestion.options.some(opt => !opt.trim())) {
-      alert('Please fill all options');
+      toast.error('Please fill all options');
       return;
     }
     
@@ -50,22 +51,22 @@ function CreateQuiz() {
 
   const handleCreateQuiz = () => {
     if (!quizData.title.trim()) {
-      alert('Please enter a quiz title');
+      toast.error('Please enter a quiz title');
       return;
     }
     
     if (!quizData.description.trim()) {
-      alert('Please enter a quiz description');
+      toast.error('Please enter a quiz description');
       return;
     }
     
     if (quizData.questions.length === 0) {
-      alert('Please add at least one question');
+      toast.error('Please add at least one question');
       return;
     }
     
     auth.addCreatedQuiz(quizData);
-    alert('Quiz created successfully!');
+    toast.success('Quiz created successfully!');
     navigate('/profile');
   };
 
