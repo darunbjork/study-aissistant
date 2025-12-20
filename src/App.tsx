@@ -8,25 +8,24 @@ import Study from './pages/Study';
 import CreateQuiz from './pages/CreateQuiz';
 import TakeQuiz from './pages/TakeQuiz';
 import ProtectedRoute from './components/ProtectedRoute';
-import Card from './components/Card';
 
 function App() {
   return (
     <Router>
       <Navbar />
-      <div style={{ padding: '2rem', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+      <div style={{ padding: '20px' }}>
         <Routes>
-          <Route path="/" element={<Card><Home /></Card>} />
-          <Route path="/login" element={<Card><Login /></Card>} />
-          <Route path="/signup" element={<Card><Signup /></Card>} />
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
           <Route path="/profile" element={
             <ProtectedRoute>
-              <Card><Profile /></Card>
+              <Profile />
             </ProtectedRoute>
           } />
           <Route path="/study" element={
             <ProtectedRoute>
-              <Card><Study /></Card>
+              <Study />
             </ProtectedRoute>
           } />
           <Route path="/create-quiz" element={
