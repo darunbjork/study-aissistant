@@ -2,7 +2,7 @@ import type { ButtonHTMLAttributes, ReactNode } from 'react';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
-  variant?: 'primary' | 'secondary' | 'danger';
+  variant?: 'primary' | 'secondary' | 'danger' | 'success';
 }
 
 function Button({ children, variant = 'primary', ...props }: ButtonProps) {
@@ -25,6 +25,10 @@ function Button({ children, variant = 'primary', ...props }: ButtonProps) {
     },
     danger: {
       backgroundColor: '#dc2626',
+      color: 'white',
+    },
+    success: {
+      backgroundColor: '#10b981',
       color: 'white',
     },
   };

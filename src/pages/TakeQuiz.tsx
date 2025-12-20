@@ -13,6 +13,9 @@ function QuizPlayer({ quiz }: { quiz: Quiz }) {
   const [score, setScore] = useState<number | null>(null);
   const navigate = useNavigate();
 
+
+    const currentQ = quiz.questions[currentQuestion];
+
   const handleAnswerSelect = (optionIndex: number) => {
     const newAnswers = [...selectedAnswers];
     newAnswers[currentQuestion] = optionIndex;
@@ -58,8 +61,6 @@ function QuizPlayer({ quiz }: { quiz: Quiz }) {
       </div>
     );
   }
-
-  const currentQ = quiz.questions[currentQuestion];
 
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto' }}>
