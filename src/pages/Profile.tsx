@@ -300,98 +300,95 @@ function Profile() {
               </p>
             </Card>
           ) : (
-            <>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', marginBottom: '24px' }}>
-                {/* Line Chart */}
-                <Card title="Performance Over Time">
-                  <div style={{ height: '300px' }}>
-                    <ResponsiveContainer width="100%" height="100%">
-                      <LineChart data={performanceData}>
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="name" />
-                        <YAxis domain={[0, 100]} />
-                        <Tooltip />
-                        <Legend />
-                        <Line type="monotone" dataKey="score" stroke="#4f46e5" strokeWidth={2} />
-                      </LineChart>
-                    </ResponsiveContainer>
-                  </div>
-                </Card>
-
-                {/* Pie Chart */}
-                <Card title="Overall Accuracy">
-                  <div style={{ height: '300px' }}>
-                    <ResponsiveContainer width="100%" height="100%">
-                      <PieChart>
-                        <Pie
-                          data={pieData}
-                          cx="50%"
-                          cy="50%"
-                          labelLine={false}
-                          label={({ name, value }) => `${name}: ${value}`}
-                          outerRadius={100}
-                          fill="#8884d8"
-                          dataKey="value"
-                        >
-                          {pieData.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={entry.color} />
-                          ))}
-                        </Pie>
-                        <Tooltip />
-                      </PieChart>
-                    </ResponsiveContainer>
-                  </div>
-                  <div style={{ textAlign: 'center', marginTop: '16px' }}>
-                    <p style={{ fontSize: '14px', color: '#666' }}>
-                      Total Questions Answered: {totalQuestions}
-                    </p>
-                  </div>
-                </Card>
-              </div>
-
-              {/* Edit Profile Section */}
-              <Card title="Edit Profile" style={{ marginTop: '24px' }}>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', maxWidth: '400px' }}>
-                  <div>
-                    <label style={{ display: 'block', marginBottom: '8px' }}>Name</label>
-                    <input 
-                      type="text"
-                      value={editName}
-                      onChange={(e) => setEditName(e.target.value)}
-                      placeholder="Your name"
-                      style={{
-                        width: '100%',
-                        padding: '8px 12px',
-                        border: '1px solid #ccc',
-                        borderRadius: '4px'
-                      }}
-                    />
-                  </div>
-                  <div>
-                    <label style={{ display: 'block', marginBottom: '8px' }}>Email</label>
-                    <input 
-                      type="email"
-                      value={auth.user.email}
-                      disabled
-                      style={{
-                        width: '100%',
-                        padding: '8px 12px',
-                        border: '1px solid #ccc',
-                        borderRadius: '4px',
-                        backgroundColor: '#f5f5f5',
-                        color: '#666'
-                      }}
-                    />
-                  </div>
-                  <Button onClick={() => auth.updateProfile({ name: editName })}>
-                    Update Name
-                  </Button>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', marginBottom: '24px' }}>
+              {/* Line Chart */}
+              <Card title="Performance Over Time">
+                <div style={{ height: '300px' }}>
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={performanceData}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="name" />
+                      <YAxis domain={[0, 100]} />
+                      <Tooltip />
+                      <Legend />
+                      <Line type="monotone" dataKey="score" stroke="#4f46e5" strokeWidth={2} />
+                    </LineChart>
+                  </ResponsiveContainer>
                 </div>
               </Card>
-            </>
+
+              {/* Pie Chart */}
+              <Card title="Overall Accuracy">
+                <div style={{ height: '300px' }}>
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={pieData}
+                        cx="50%"
+                        cy="50%"
+                        labelLine={false}
+                        outerRadius={100}
+                        fill="#8884d8"
+                        dataKey="value"
+                      >
+                        {pieData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.color} />
+                        ))}
+                      </Pie>
+                      <Tooltip />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
+                <div style={{ textAlign: 'center', marginTop: '16px' }}>
+                  <p style={{ fontSize: '14px', color: '#666' }}>
+                    Total Questions Answered: {totalQuestions}
+                  </p>
+                </div>
+              </Card>
+            </div>
           )}
         </div>
       )}
+
+      {/* Edit Profile Section */}
+      <Card title="Edit Profile" style={{ marginTop: '24px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', maxWidth: '400px' }}>
+          <div>
+            <label style={{ display: 'block', marginBottom: '8px' }}>Name</label>
+            <input 
+              type="text"
+              value={editName}
+              onChange={(e) => setEditName(e.target.value)}
+              placeholder="Your name"
+              style={{
+                width: '100%',
+                padding: '8px 12px',
+                border: '1px solid #ccc',
+                borderRadius: '4px'
+              }}
+            />
+          </div>
+          <div>
+            <label style={{ display: 'block', marginBottom: '8px' }}>Email</label>
+            <input 
+              type="email"
+              value={auth.user.email}
+              disabled
+              style={{
+                width: '100%',
+                padding: '8px 12px',
+                border: '1px solid #ccc',
+                borderRadius: '4px',
+                backgroundColor: '#f5f5f5',
+                color: '#666'
+              }}
+            />
+          </div>
+          <Button onClick={() => auth.updateProfile({ name: editName })}>
+            Update Name
+          </Button>
+        </div>
+      </Card>
     </div>
   );
 }
