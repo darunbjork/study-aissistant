@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Legend, ResponsiveContainer, Tooltip } from 'recharts';
 import QuizCard from '../components/QuizCard';
 import Button from '../components/Button';
 import Card from '../components/Card';
+import AccuracyPieChart from '../components/AccuracyPieChart';
 import type { SavedQuizResult, Quiz, UserAnswer } from '../types';
 
 function Profile() {
@@ -36,10 +37,7 @@ function Profile() {
   const totalQuestions = quizHistory.reduce((sum: number, q: SavedQuizResult) => sum + q.totalQuestions, 0);
   const totalCorrect = quizHistory.reduce((sum: number, q: SavedQuizResult) => sum + q.score, 0);
 
-  const pieData = [
-    { name: 'Correct', value: totalCorrect, color: '#10b981' },
-    { name: 'Incorrect', value: totalQuestions - totalCorrect, color: '#ef4444' }
-  ];
+
 
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 16px' }}>
@@ -320,29 +318,10 @@ function Profile() {
               {/* Pie Chart */}
               <Card title="Overall Accuracy">
                 <div style={{ height: '300px' }}>
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie
-                        data={pieData}
-                        cx="50%"
-                        cy="50%"
-                        labelLine={false}
-                        outerRadius={100}
-                        fill="#8884d8"
-                        dataKey="value"
-                      >
-                        {pieData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={entry.color} />
-                        ))}
-                      </Pie>
-                      <Tooltip />
-                    </PieChart>
-                  </ResponsiveContainer>
-                </div>
-                <div style={{ textAlign: 'center', marginTop: '16px' }}>
-                  <p style={{ fontSize: '14px', color: '#666' }}>
-                    Total Questions Answered: {totalQuestions}
-                  </p>
+                  <AccuracyPieChart 
+                    totalCorrect={totalCorrect} 
+                    totalQuestions={totalQuestions} 
+                  />
                 </div>
               </Card>
             </div>
