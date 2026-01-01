@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
+import './Signup.css';
 
 function Signup() {
   const [name, setName] = useState('');
@@ -16,37 +17,40 @@ function Signup() {
   };
 
   return (
-    <div>
-      <h2>Sign Up</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Name:</label>
+    <div className="signup-container">
+      <h2 className="signup-title">Sign Up</h2>
+      <form onSubmit={handleSubmit} className="signup-form">
+        <div className="signup-form-group">
+          <label className="signup-label">Name:</label>
           <input 
             type="text" 
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
+            className="signup-input"
           />
         </div>
-        <div>
-          <label>Email:</label>
+        <div className="signup-form-group">
+          <label className="signup-label">Email:</label>
           <input 
             type="email" 
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            className="signup-input"
           />
         </div>
-        <div>
-          <label>Password:</label>
+        <div className="signup-form-group">
+          <label className="signup-label">Password:</label>
           <input 
             type="password" 
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            className="signup-input"
           />
         </div>
-        <button type="submit">Sign Up</button>
+        <button type="submit" className="signup-button">Sign Up</button>
       </form>
     </div>
   );

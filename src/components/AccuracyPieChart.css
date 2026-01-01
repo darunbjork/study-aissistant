@@ -1,0 +1,13 @@
+.accuracy-pie-chart-container {
+    text-align: center;
+    margin-top: 16px;
+}
+
+.accuracy-pie-chart-text {
+    font-size: 14px;
+    color: #666;
+}
+
+.dark .accuracy-pie-chart-text {
+    color: #a0a0a0;
+}

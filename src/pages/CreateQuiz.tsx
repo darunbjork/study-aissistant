@@ -5,6 +5,7 @@ import { useAuth } from '../hooks/useAuth';
 import type { NewQuiz, QuizQuestion } from '../types';
 import Card from '../components/Card';
 import Button from '../components/Button';
+import './CreateQuiz.css';
 
 function CreateQuiz() {
   const [quizData, setQuizData] = useState<NewQuiz>({
@@ -71,23 +72,18 @@ function CreateQuiz() {
   };
 
   return (
-    <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-      <h1 style={{ fontSize: '28px', marginBottom: '24px' }}>
+    <div className="create-quiz-container">
+      <h1 className="create-quiz-title">
         Create New Quiz
       </h1>
 
-      <Card title="Quiz Details" style={{ marginBottom: '24px' }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      <Card title="Quiz Details" className="create-quiz-card">
+        <div className="create-quiz-form">
           <div>
-            <label style={{ display: 'block', marginBottom: '8px' }}>Title</label>
+            <label className="create-quiz-label">Title</label>
             <input
               type="text"
-              style={{
-                width: '100%',
-                padding: '8px 12px',
-                border: '1px solid #ccc',
-                borderRadius: '4px'
-              }}
+              className="create-quiz-input"
               value={quizData.title}
               onChange={(e) => setQuizData({...quizData, title: e.target.value})}
               placeholder="Enter quiz title"
@@ -96,15 +92,9 @@ function CreateQuiz() {
           </div>
           
           <div>
-            <label style={{ display: 'block', marginBottom: '8px' }}>Description</label>
+            <label className="create-quiz-label">Description</label>
             <textarea
-              style={{
-                width: '100%',
-                padding: '8px 12px',
-                border: '1px solid #ccc',
-                borderRadius: '4px',
-                minHeight: '100px'
-              }}
+              className="create-quiz-textarea"
               rows={3}
               value={quizData.description}
               onChange={(e) => setQuizData({...quizData, description: e.target.value})}
@@ -113,36 +103,26 @@ function CreateQuiz() {
           </div>
       </Card>
 
-      <Card title="Add Question" style={{ marginBottom: '24px' }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      <Card title="Add Question" className="create-quiz-card">
+        <div className="create-quiz-form">
           <div>
-            <label style={{ display: 'block', marginBottom: '8px' }}>Question</label>
+            <label className="create-quiz-label">Question</label>
             <input
               type="text"
-              style={{
-                width: '100%',
-                padding: '8px 12px',
-                border: '1px solid #ccc',
-                borderRadius: '4px'
-              }}
+              className="create-quiz-input"
               value={currentQuestion.question}
               onChange={(e) => setCurrentQuestion({...currentQuestion, question: e.target.value})}
               placeholder="Enter question"
             />
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <label style={{ display: 'block', marginBottom: '8px' }}>Options</label>
+          <div className="create-quiz-options">
+            <label className="create-quiz-label">Options</label>
             {currentQuestion.options.map((option, index) => (
-              <div key={index} style={{ display: 'flex', alignItems: 'center' }}>
+              <div key={index} className="create-quiz-option">
                 <input
                   type="text"
-                  style={{
-                    width: '100%',
-                    padding: '8px 12px',
-                    border: '1px solid #ccc',
-                    borderRadius: '4px'
-                  }}
+                  className="create-quiz-input"
                   value={option}
                   onChange={(e) => {
                     const newOptions = [...currentQuestion.options];
@@ -156,7 +136,7 @@ function CreateQuiz() {
                   name="correctAnswer"
                   checked={currentQuestion.correctAnswer === index}
                   onChange={() => setCurrentQuestion({...currentQuestion, correctAnswer: index})}
-                  style={{ marginLeft: '12px' }}
+                  className="create-quiz-radio"
                 />
               </div>
             ))}
@@ -165,33 +145,26 @@ function CreateQuiz() {
         </div>
       </Card>
 
-      <Card title="Questions Preview" style={{ marginBottom: '24px' }}>
+      <Card title="Questions Preview" className="create-quiz-card">
         {quizData.questions.length === 0 ? (
-          <p style={{ color: '#888', textAlign: 'center' }}>
+          <p className="create-quiz-preview-no-questions">
             No questions added yet
           </p>
         ) : (
-          <ul style={{ listStyleType: 'none', padding: 0 }}>
+          <ul className="create-quiz-preview-list">
             {quizData.questions.map((q, index) => (
               <li 
                 key={index} 
-                style={{ 
-                  borderBottom: '1px solid #eee', 
-                  paddingBottom: '12px',
-                  marginBottom: '12px'
-                }}
+                className="create-quiz-preview-list-item"
               >
-                <p style={{ fontWeight: 'bold', marginBottom: '4px' }}>
+                <p className="create-quiz-question">
                   {index + 1}. {q.question}
                 </p>
-                <ul style={{ marginLeft: '20px' }}>
+                <ul className="create-quiz-options-list">
                   {q.options.map((opt, optIndex) => (
                     <li 
                       key={optIndex}
-                      style={{
-                        color: optIndex === q.correctAnswer ? 'green' : 'inherit',
-                        fontWeight: optIndex === q.correctAnswer ? 'bold' : 'normal'
-                      }}
+                      className={optIndex === q.correctAnswer ? 'create-quiz-option-list-item-correct' : ''}
                     >
                       {optIndex + 1}. {opt} {optIndex === q.correctAnswer && '✓'}
                     </li>
@@ -202,11 +175,7 @@ function CreateQuiz() {
           </ul>
         )}
       </Card>
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'space-between',
-        marginTop: '24px'
-      }}>
+      <div className="create-quiz-actions">
         <Button 
           variant="secondary" 
           onClick={() => navigate('/profile')}

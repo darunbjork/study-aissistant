@@ -7,15 +7,18 @@ import Button from '../components/Button';
 import Card from '../components/Card';
 import AccuracyPieChart from '../components/AccuracyPieChart';
 import type { SavedQuizResult, Quiz, UserAnswer } from '../types';
+import { useTheme } from '../contexts/ThemeContext'; // Import useTheme
+import './Profile.css';
 
 function Profile() {
   const auth = useAuth();
+  const { theme } = useTheme(); // Use the theme hook
   const [editName, setEditName] = useState(auth.user?.name || '');
   const [activeTab, setActiveTab] = useState<'quizzes' | 'history' | 'analytics'>('quizzes');
   const navigate = useNavigate();
 
   if (!auth.user) {
-    return <div style={{ padding: '24px' }}>Please log in to view profile</div>;
+    return <div className="profile-container">Please log in to view profile</div>;
   }
 
   const quizHistory = auth.user.quizzes || [];
@@ -40,104 +43,61 @@ function Profile() {
 
 
   return (
-    <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 16px' }}>
+    <div className="profile-container">
       {/* Header */}
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'space-between', 
-        alignItems: 'center',
-        marginBottom: '32px',
-        marginTop: '24px'
-      }}>
+      <div className="profile-header">
         <div>
-          <h1 style={{ fontSize: '32px', marginBottom: '8px' }}>Profile</h1>
-          <p style={{ color: '#666' }}>Welcome back, {auth.user.name}!</p>
+          <h1 className="profile-title">Profile</h1>
+          <p className="profile-welcome">Welcome back, {auth.user.name}!</p>
         </div>
       </div>
 
       {/* Stats Cards */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-        gap: '16px',
-        marginBottom: '32px'
-      }}>
+      <div className="profile-stats">
         <Card>
-          <div style={{ textAlign: 'center', padding: '24px' }}>
-            <div style={{ fontSize: '48px', fontWeight: 'bold', color: '#4f46e5' }}>
+          <div className="profile-stat-card">
+            <div className="profile-stat-value profile-stat-value-created">
               {createdQuizzes.length}
             </div>
-            <p style={{ color: '#666', marginTop: '8px' }}>Quizzes Created</p>
+            <p className="profile-stat-label">Quizzes Created</p>
           </div>
         </Card>
 
         <Card>
-          <div style={{ textAlign: 'center', padding: '24px' }}>
-            <div style={{ fontSize: '48px', fontWeight: 'bold', color: '#10b981' }}>
+          <div className="profile-stat-card">
+            <div className="profile-stat-value profile-stat-value-taken">
               {quizHistory.length}
             </div>
-            <p style={{ color: '#666', marginTop: '8px' }}>Quizzes Taken</p>
+            <p className="profile-stat-label">Quizzes Taken</p>
           </div>
         </Card>
 
         <Card>
-          <div style={{ textAlign: 'center', padding: '24px' }}>
-            <div style={{ fontSize: '48px', fontWeight: 'bold', color: '#f59e0b' }}>
+          <div className="profile-stat-card">
+            <div className="profile-stat-value profile-stat-value-avg">
               {avgScore.toFixed(0)}%
             </div>
-            <p style={{ color: '#666', marginTop: '8px' }}>Average Score</p>
+            <p className="profile-stat-label">Average Score</p>
           </div>
         </Card>
       </div>
 
       {/* Tabs */}
-      <div style={{ 
-        display: 'flex', 
-        gap: '8px', 
-        marginBottom: '24px',
-        borderBottom: '2px solid #e5e7eb'
-      }}>
+      <div className="profile-tabs">
         <button
-          style={{
-            padding: '12px 24px',
-            border: 'none',
-            borderBottom: activeTab === 'quizzes' ? '3px solid #4f46e5' : 'none',
-            backgroundColor: 'transparent',
-            cursor: 'pointer',
-            fontWeight: activeTab === 'quizzes' ? '600' : 'normal',
-            color: activeTab === 'quizzes' ? '#4f46e5' : '#666',
-            fontSize: '16px'
-          }}
+          className={`profile-tab ${activeTab === 'quizzes' ? 'profile-tab-active' : ''}`}
           onClick={() => setActiveTab('quizzes')}
         >
           My Quizzes
         </button>
         <button
-          style={{
-            padding: '12px 24px',
-            border: 'none',
-            borderBottom: activeTab === 'history' ? '3px solid #4f46e5' : 'none',
-            backgroundColor: 'transparent',
-            cursor: 'pointer',
-            fontWeight: activeTab === 'history' ? '600' : 'normal',
-            color: activeTab === 'history' ? '#4f46e5' : '#666',
-            fontSize: '16px'
-          }}
+          className={`profile-tab ${activeTab === 'history' ? 'profile-tab-active' : ''}`}
           onClick={() => setActiveTab('history')}
         >
           Quiz History
         </button>
         <button
-          style={{
-            padding: '12px 24px',
-            border: 'none',
-            borderBottom: activeTab === 'analytics' ? '3px solid #4f46e5' : 'none',
-            backgroundColor: 'transparent',
-            cursor: 'pointer',
-            fontWeight: activeTab === 'analytics' ? '600' : 'normal',
-            color: activeTab === 'analytics' ? '#4f46e5' : '#666',
-            fontSize: '16px'
-          }}
+          className={`profile-tab ${activeTab === 'analytics' ? 'profile-tab-active' : ''}`}
           onClick={() => setActiveTab('analytics')}
         >
           Analytics
@@ -147,14 +107,9 @@ function Profile() {
       {/* Tab Content */}
       {activeTab === 'quizzes' && (
         <div>
-          <div style={{ 
-            display: 'flex', 
-            justifyContent: 'space-between', 
-            alignItems: 'center',
-            marginBottom: '16px'
-          }}>
-            <h3 style={{ fontSize: '20px' }}>My Created Quizzes</h3>
-            <div style={{ display: 'flex', gap: '8px' }}>
+          <div className="profile-section-header">
+            <h3 className="profile-section-title">My Created Quizzes</h3>
+            <div className="profile-section-actions">
               <Button onClick={() => navigate('/study')}>
                 Generate with AI
               </Button>
@@ -166,20 +121,12 @@ function Profile() {
           
           {createdQuizzes.length === 0 ? (
             <Card>
-              <p style={{ 
-                color: '#888', 
-                textAlign: 'center',
-                padding: '48px 0'
-              }}>
+              <p className="profile-no-data">
                 You haven't created any quizzes yet. Create your first quiz using AI or manually!
               </p>
             </Card>
           ) : (
-            <div style={{ 
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))',
-              gap: '16px'
-            }}>
+            <div className="profile-quizzes-grid">
               {createdQuizzes.map((quiz: Quiz) => (
                 <QuizCard
                   key={quiz.id}
@@ -195,71 +142,52 @@ function Profile() {
 
       {activeTab === 'history' && (
         <div>
-          <h3 style={{ fontSize: '20px', marginBottom: '16px' }}>Quiz History</h3>
+          <h3 className="profile-section-title">Quiz History</h3>
           
           {quizHistory.length === 0 ? (
             <Card>
-              <p style={{ 
-                color: '#888', 
-                textAlign: 'center',
-                padding: '48px 0'
-              }}>
+              <p className="profile-no-data">
                 No quiz attempts yet. Take a quiz to see your history!
               </p>
             </Card>
           ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <div className="profile-history-list">
               {quizHistory.sort((a: SavedQuizResult, b: SavedQuizResult) => new Date(b.date).getTime() - new Date(a.date).getTime()).map((result: SavedQuizResult) => (
                 <Card key={result.id}>
-                  <div style={{ 
-                    display: 'flex', 
-                    justifyContent: 'space-between',
-                    alignItems: 'center'
-                  }}>
+                  <div className="profile-history-item-header">
                     <div>
-                      <h4 style={{ marginBottom: '8px', fontSize: '18px' }}>{result.quizTitle}</h4>
-                      <p style={{ color: '#666', fontSize: '14px' }}>
+                      <h4 className="profile-history-item-title">{result.quizTitle}</h4>
+                      <p className="profile-history-item-date">
                         {new Date(result.date).toLocaleDateString()} at{' '}
                         {new Date(result.date).toLocaleTimeString()}
                       </p>
                     </div>
-                    <div style={{ textAlign: 'right' }}>
-                      <div style={{ 
-                        fontSize: '32px', 
-                        fontWeight: 'bold',
-                        color: result.percentage >= 80 ? '#10b981' : result.percentage >= 60 ? '#f59e0b' : '#ef4444'
-                      }}>
+                    <div className="profile-history-item-score">
+                      <div className={`profile-history-item-score-value ${result.percentage >= 80 ? 'profile-history-item-score-value-high' : result.percentage >= 60 ? 'profile-history-item-score-value-medium' : 'profile-history-item-score-value-low'}`}>
                         {result.percentage.toFixed(0)}%
                       </div>
-                      <p style={{ color: '#666', fontSize: '14px' }}>
+                      <p className="profile-history-item-score-details">
                         {result.score}/{result.totalQuestions} correct
                       </p>
                     </div>
                   </div>
                   
                   {/* Answer Breakdown */}
-                  <div style={{ marginTop: '16px', paddingTop: '16px', borderTop: '1px solid #e5e7eb' }}>
+                  <div className="profile-history-item-breakdown">
                     <details>
-                      <summary style={{ cursor: 'pointer', fontWeight: '600', marginBottom: '12px' }}>
+                      <summary className="profile-history-item-details-summary">
                         View Details
                       </summary>
-                      <div style={{ marginLeft: '16px' }}>
+                      <div className="profile-history-item-details-content">
                         {result.answers.map((answer: UserAnswer, index: number) => (
                           <div 
                             key={answer.questionId}
-                            style={{
-                              padding: '8px',
-                              marginBottom: '8px',
-                              borderLeft: `4px solid ${answer.isCorrect ? '#10b981' : '#ef4444'}`,
-                              paddingLeft: '12px',
-                              backgroundColor: answer.isCorrect ? '#d1fae5' : '#fee2e2',
-                              borderRadius: '4px'
-                            }}
+                            className={`profile-history-item-answer ${answer.isCorrect ? 'profile-history-item-answer-correct' : 'profile-history-item-answer-incorrect'}`}
                           >
-                            <p style={{ fontSize: '14px', marginBottom: '4px' }}>
+                            <p className="profile-history-item-answer-question">
                               <strong>Q{index + 1}:</strong> {answer.question}
                             </p>
-                            <p style={{ fontSize: '12px', color: '#666' }}>
+                            <p className="profile-history-item-answer-status">
                               {answer.isCorrect ? '✓ Correct' : '✗ Incorrect'}
                             </p>
                           </div>
@@ -268,7 +196,7 @@ function Profile() {
                     </details>
                   </div>
                   
-                  <div style={{ marginTop: '12px' }}>
+                  <div className="profile-history-item-actions">
                     <Button 
                       variant="danger"
                       onClick={() => auth.deleteQuiz(result.id)}
@@ -285,30 +213,33 @@ function Profile() {
 
       {activeTab === 'analytics' && (
         <div>
-          <h3 style={{ fontSize: '20px', marginBottom: '16px' }}>Performance Analytics</h3>
+          <h3 className="profile-section-title">Performance Analytics</h3>
           
           {quizHistory.length === 0 ? (
             <Card>
-              <p style={{ 
-                color: '#888', 
-                textAlign: 'center',
-                padding: '48px 0'
-              }}>
+              <p className="profile-no-data">
                 No data yet. Take some quizzes to see your analytics!
               </p>
             </Card>
           ) : (
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', marginBottom: '24px' }}>
+            <div className="profile-analytics-grid">
               {/* Line Chart */}
               <Card title="Performance Over Time">
-                <div style={{ height: '300px' }}>
+                <div className="profile-chart-container">
                   <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={performanceData}>
                       <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="name" />
-                      <YAxis domain={[0, 100]} />
-                      <Tooltip />
-                      <Legend />
+                      <XAxis dataKey="name" stroke={theme === 'dark' ? '#e5e5e5' : '#333'} />
+                      <YAxis domain={[0, 100]} stroke={theme === 'dark' ? '#e5e5e5' : '#333'} />
+                      <Tooltip 
+                        contentStyle={{ 
+                          backgroundColor: theme === 'dark' ? '#333' : '#fff', 
+                          borderColor: theme === 'dark' ? '#555' : '#ccc', 
+                          color: theme === 'dark' ? '#e5e5e5' : '#333' 
+                        }} 
+                        itemStyle={{ color: theme === 'dark' ? '#e5e5e5' : '#333' }} 
+                      />
+                      <Legend wrapperStyle={{ color: theme === 'dark' ? '#e5e5e5' : '#333' }} />
                       <Line type="monotone" dataKey="score" stroke="#4f46e5" strokeWidth={2} />
                     </LineChart>
                   </ResponsiveContainer>
@@ -317,10 +248,11 @@ function Profile() {
 
               {/* Pie Chart */}
               <Card title="Overall Accuracy">
-                <div style={{ height: '300px' }}>
+                <div className="profile-chart-container">
                   <AccuracyPieChart 
                     totalCorrect={totalCorrect} 
-                    totalQuestions={totalQuestions} 
+                    totalQuestions={totalQuestions}
+                    theme={theme}
                   />
                 </div>
               </Card>
@@ -330,37 +262,25 @@ function Profile() {
       )}
 
       {/* Edit Profile Section */}
-      <Card title="Edit Profile" style={{ marginTop: '24px' }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', maxWidth: '400px' }}>
-          <div>
-            <label style={{ display: 'block', marginBottom: '8px' }}>Name</label>
+      <Card title="Edit Profile" className="profile-edit-card">
+        <div className="profile-edit-form">
+          <div className="profile-edit-group">
+            <label className="profile-edit-label">Name</label>
             <input 
               type="text"
               value={editName}
               onChange={(e) => setEditName(e.target.value)}
               placeholder="Your name"
-              style={{
-                width: '100%',
-                padding: '8px 12px',
-                border: '1px solid #ccc',
-                borderRadius: '4px'
-              }}
+              className="profile-edit-input"
             />
           </div>
-          <div>
-            <label style={{ display: 'block', marginBottom: '8px' }}>Email</label>
+          <div className="profile-edit-group">
+            <label className="profile-edit-label">Email</label>
             <input 
               type="email"
               value={auth.user.email}
               disabled
-              style={{
-                width: '100%',
-                padding: '8px 12px',
-                border: '1px solid #ccc',
-                borderRadius: '4px',
-                backgroundColor: '#f5f5f5',
-                color: '#666'
-              }}
+              className="profile-edit-input profile-edit-input-disabled"
             />
           </div>
           <Button onClick={() => auth.updateProfile({ name: editName })}>

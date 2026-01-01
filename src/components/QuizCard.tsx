@@ -1,6 +1,7 @@
 import { type Quiz } from '../types';
 import Card from './Card';
 import Button from './Button';
+import './QuizCard.css';
 
 interface QuizCardProps {
   quiz: Quiz;
@@ -12,25 +13,17 @@ interface QuizCardProps {
 function QuizCard({ quiz, onDelete, onEdit, onTakeQuiz }: QuizCardProps) {
   return (
     <Card 
-     style={{ marginBottom: '16px' }}
+     className="quiz-card"
       title={quiz.title}
     >
-      <p style={{ color: '#666', marginBottom: '8px' }}>
+      <p className="quiz-card-description">
         {quiz.description}
       </p>
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'space-between', 
-        alignItems: 'center',
-        marginTop: '16px'
-      }}>
-        <span style={{ 
-          fontSize: '14px', 
-          color: '#888'
-        }}>
+      <div className="quiz-card-footer">
+        <span className="quiz-card-details">
           {quiz.questions.length} questions • Created: {quiz.date}
         </span>
-        <div style={{ display: 'flex', gap: '8px' }}>
+        <div className="quiz-card-actions">
           {onTakeQuiz && (
             <Button onClick={() => onTakeQuiz(quiz.id)}>
               Take Quiz

@@ -5,6 +5,7 @@ import { useAuth } from '../hooks/useAuth';
 import type { QuizQuestion, NewQuiz } from '../types';
 import Button from '../components/Button';
 import Card from '../components/Card';
+import './Study.css';
 
 function Study() {
   const [studyNote, setStudyNote] = useState('');
@@ -169,15 +170,15 @@ Correct: [A/B/C/D]
   };
 
   return (
-    <div style={{ maxWidth: '900px', margin: '0 auto' }}>
-      <h1 style={{ fontSize: '28px', marginBottom: '24px' }}>
+    <div className="study-container">
+      <h1 className="study-title">
         Study with AI 🤖
       </h1>
 
-      <Card title="Generate Quiz from Notes" style={{ marginBottom: '24px' }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      <Card title="Generate Quiz from Notes" className="study-card">
+        <div className="study-form">
           <div>
-            <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
+            <label className="study-label">
               Paste your study notes
             </label>
             <textarea 
@@ -185,14 +186,7 @@ Correct: [A/B/C/D]
               onChange={(e) => setStudyNote(e.target.value)}
               placeholder="Example: React hooks allow function components to use state and lifecycle features. useState manages state, useEffect handles side effects..."
               rows={8}
-              style={{ 
-                width: '100%', 
-                padding: '12px',
-                border: '1px solid #ccc',
-                borderRadius: '8px',
-                fontSize: '14px',
-                fontFamily: 'inherit'
-              }}
+              className="study-textarea"
             />
           </div>
           
@@ -204,10 +198,10 @@ Correct: [A/B/C/D]
 
       {quizQuestions.length > 0 && (
         <>
-          <Card title="Quiz Details" style={{ marginBottom: '24px' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <Card title="Quiz Details" className="study-card">
+            <div className="study-form">
               <div>
-                <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
+                <label className="study-label">
                   Quiz Title
                 </label>
                 <input
@@ -215,17 +209,12 @@ Correct: [A/B/C/D]
                   value={quizTitle}
                   onChange={(e) => setQuizTitle(e.target.value)}
                   placeholder="Enter quiz title"
-                  style={{
-                    width: '100%',
-                    padding: '12px',
-                    border: '1px solid #ccc',
-                    borderRadius: '8px'
-                  }}
+                  className="study-input"
                 />
               </div>
               
               <div>
-                <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
+                <label className="study-label">
                   Description
                 </label>
                 <textarea
@@ -233,47 +222,31 @@ Correct: [A/B/C/D]
                   onChange={(e) => setQuizDescription(e.target.value)}
                   placeholder="Enter quiz description"
                   rows={2}
-                  style={{
-                    width: '100%',
-                    padding: '12px',
-                    border: '1px solid #ccc',
-                    borderRadius: '8px'
-                  }}
+                  className="study-textarea"
                 />
               </div>
             </div>
           </Card>
 
-          <Card title={`Generated Questions (${quizQuestions.length})`} style={{ marginBottom: '24px' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+          <Card title={`Generated Questions (${quizQuestions.length})`} className="study-card">
+            <div className="study-questions-container">
               {quizQuestions.map((q, index) => (
                 <div 
                   key={q.id}
-                  style={{ 
-                    padding: '16px',
-                    border: '1px solid #e5e7eb',
-                    borderRadius: '8px',
-                    backgroundColor: '#f9fafb'
-                  }}
+                  className="study-question-card"
                 >
-                  <p style={{ fontWeight: '600', marginBottom: '12px' }}>
+                  <p className="study-question">
                     Q{index + 1}: {q.question}
                   </p>
-                  <div style={{ marginLeft: '20px' }}>
+                  <div className="study-options">
                     {q.options.map((option, optIndex) => (
                       <div 
                         key={optIndex}
-                        style={{
-                          padding: '8px',
-                          marginBottom: '4px',
-                          backgroundColor: optIndex === q.correctAnswer ? '#d1fae5' : 'white',
-                          borderRadius: '4px',
-                          border: optIndex === q.correctAnswer ? '2px solid #10b981' : '1px solid #e5e7eb'
-                        }}
+                        className={`study-option ${optIndex === q.correctAnswer ? 'study-option-correct' : ''}`}
                       >
                         {String.fromCharCode(65 + optIndex)}) {option}
                         {optIndex === q.correctAnswer && (
-                          <span style={{ marginLeft: '8px', color: '#10b981', fontWeight: '600' }}>
+                          <span className="study-correct-answer">
                             ✓ Correct
                           </span>
                         )}
@@ -285,7 +258,7 @@ Correct: [A/B/C/D]
             </div>
           </Card>
 
-          <div style={{ display: 'flex', gap: '16px', justifyContent: 'flex-end' }}>
+          <div className="study-actions">
             <Button 
               variant="secondary"
               onClick={() => {

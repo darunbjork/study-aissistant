@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import Navbar from './components/Navbar';
@@ -10,20 +11,25 @@ import CreateQuiz from './pages/CreateQuiz';
 import TakeQuiz from './pages/TakeQuiz';
 import ProtectedRoute from './components/ProtectedRoute';
 import { useTheme } from './contexts/ThemeContext';
+import './App.css';
 
 function App() {
   const { theme } = useTheme();
 
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.body.classList.add('dark');
+    } else {
+      document.body.classList.remove('dark');
+    }
+  }, [theme]);
+
   return (
     <Router>
-      <div style={{
-        backgroundColor: theme === 'dark' ? '#1a1a1a' : '#f5f5f5',
-        color: theme === 'dark' ? '#e5e5e5' : '#1a1a1a',
-        minHeight: '100vh'
-      }}>
+      <div className={`app-container ${theme === 'dark' ? 'app-container-dark' : ''}`}>
         <Navbar />
         <ToastContainer />
-        <div style={{ padding: '20px' }}>
+        <div className="app-content">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />

@@ -1,9 +1,13 @@
-Part 7: UPDATE NAVBAR is complete.
+I have updated the navbar color for better aesthetics and readability in both light and dark modes.
 
 <br>
-Here's a summary of the changes:
-- Added a "Create Quiz" link to the authenticated section of the Navbar in `src/components/Navbar.tsx`, allowing logged-in users to navigate to the quiz creation page.
+
+Here is a summary of the changes:
 
 <br>
-Step 7.1 done - Quiz creation feature complete!
-Now, I am ready for the next instruction.
+
+- Modified `Navbar.css` to use a lighter gray for the navbar background and darker text in light mode.
+- Added dark mode specific styles for the navbar background and text to ensure good contrast.
+
+<br>
+I will now commit the changes.

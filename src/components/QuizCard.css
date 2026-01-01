@@ -1,0 +1,33 @@
+.quiz-card {
+  margin-bottom: 16px;
+}
+
+.quiz-card-description {
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.dark .quiz-card-description {
+  color: #a0a0a0;
+}
+
+.quiz-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+}
+
+.quiz-card-details {
+  font-size: 14px;
+  color: #888;
+}
+
+.dark .quiz-card-details {
+  color: #b0b0b0;
+}
+
+.quiz-card-actions {
+  display: flex;
+  gap: 8px;
+}
